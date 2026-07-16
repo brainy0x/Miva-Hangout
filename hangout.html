@@ -8,15 +8,16 @@
 <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #FDF8F0;
-    --paper-dim: #F5EEE1;
-    --ink: #1C2340;
-    --ink-soft: #4A5170;
-    --sky: #2D6E8E;
-    --coral: #E85C36;
-    --coral-dark: #C7481F;
-    --gold: #F4A93E;
-    --line: rgba(28, 35, 64, 0.15);
+    --paper: #07111f;
+    --paper-dim: #0f172a;
+    --ink: #f8f4eb;
+    --ink-soft: #b9c1d2;
+    --sky: #5ec4ff;
+    --coral: #ff7a4d;
+    --coral-dark: #ff5f2d;
+    --gold: #ffd166;
+    --line: rgba(248, 244, 235, 0.12);
+    --shadow: rgba(0, 0, 0, 0.35);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,12 +25,28 @@
   html { scroll-behavior: smooth; }
 
   body {
-    background: var(--paper);
+    background:
+      radial-gradient(circle at top left, rgba(255, 122, 77, 0.18), transparent 30%),
+      linear-gradient(135deg, #07111f 0%, #0b1426 100%);
     color: var(--ink);
     font-family: 'Inter', sans-serif;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -20% auto auto 50%;
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, rgba(94, 196, 255, 0.16), transparent 70%);
+    filter: blur(90px);
+    pointer-events: none;
+    transform: translateX(-50%);
+    z-index: -1;
   }
 
   .display {
@@ -78,8 +95,8 @@
   }
   .tear.on-ink {
     background:
-      radial-gradient(circle 9px at 0 50%, transparent 9px, var(--ink) 9.5px),
-      radial-gradient(circle 9px at 100% 50%, transparent 9px, var(--ink) 9.5px);
+      radial-gradient(circle 9px at 0 50%, transparent 9px, var(--paper-dim) 9.5px),
+      radial-gradient(circle 9px at 100% 50%, transparent 9px, var(--paper-dim) 9.5px);
   }
 
   /* ---------- nav ---------- */
@@ -113,11 +130,13 @@
   }
   .ticket {
     position: relative;
-    background: var(--ink);
-    color: var(--paper);
-    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(16, 24, 40, 0.98), rgba(8, 14, 24, 0.98));
+    color: var(--ink);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 22px;
     overflow: hidden;
-    box-shadow: 0 20px 50px -20px rgba(28,35,64,0.4);
+    box-shadow: 0 25px 60px -30px rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
   }
   .ticket-main {
     padding: 44px 32px 36px;
@@ -127,8 +146,8 @@
     content: "";
     position: absolute;
     inset: 10px;
-    border: 1.5px solid rgba(253,248,240,0.18);
-    border-radius: 10px;
+    border: 1.5px solid rgba(255, 255, 255, 0.14);
+    border-radius: 12px;
     pointer-events: none;
   }
   .stamp {
@@ -155,7 +174,7 @@
   .ticket .eyebrow { color: var(--gold); }
   .ticket h1 {
     font-size: clamp(2.4rem, 8vw, 3.6rem);
-    color: var(--paper);
+    color: var(--ink);
     margin: 10px 0 18px;
     max-width: 80%;
   }
@@ -178,19 +197,42 @@
     font-size: 1rem;
   }
   .ticket-stub {
-    background: rgba(253,248,240,0.06);
+    background: rgba(255, 255, 255, 0.04);
     padding: 26px 32px 30px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
   .serial {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.72rem;
-    color: rgba(253,248,240,0.5);
+    color: rgba(248, 244, 235, 0.62);
     letter-spacing: 0.06em;
+  }
+
+  .price-box {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .price-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(248, 244, 235, 0.62);
+  }
+  .price-value {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--gold);
   }
 
   .btn {
@@ -219,6 +261,59 @@
     text-align: center;
     margin-top: 14px;
     font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .reveal-card {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: revealIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: opacity, transform;
+  }
+
+  .reveal-card.delay {
+    animation-delay: 0.16s;
+  }
+
+  @keyframes revealIn {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .widget-card {
+    background: linear-gradient(135deg, rgba(255, 122, 77, 0.16), rgba(255, 209, 102, 0.08));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 22px;
+    padding: 24px;
+    box-shadow: 0 25px 60px -30px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+  }
+
+  .widget-intro {
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin-bottom: 16px;
+  }
+
+  .tt-widget {
+    min-height: 620px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--paper-dim);
+  }
+
+  .tt-widget iframe {
+    display: block;
+    width: 100%;
+    min-height: 620px;
+    border: none;
+    background: var(--paper);
   }
 
   /* ---------- section shell ---------- */
@@ -270,17 +365,19 @@
 
   /* ---------- menu card ---------- */
   .menu-card {
-    background: var(--ink);
-    color: var(--paper);
-    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(16, 24, 40, 0.98), rgba(8, 14, 24, 0.98));
+    color: var(--ink);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 22px;
     padding: 8px 0;
+    box-shadow: 0 25px 60px -30px rgba(0, 0, 0, 0.7);
   }
   .menu-row {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     padding: 16px 28px;
-    border-bottom: 1px dashed rgba(253,248,240,0.15);
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
   }
   .menu-row:last-child { border-bottom: none; }
   .menu-row .course {
@@ -415,7 +512,7 @@
 
   <!-- HERO -->
   <div class="hero-section wrap">
-    <div class="ticket">
+    <div class="ticket reveal-card">
       <div class="ticket-main">
         <div class="stamp">NO WALK-<br>INS ON<br>THE DAY</div>
         <p class="eyebrow">Admit One · Miva Open University</p>
@@ -442,6 +539,10 @@
       <div class="tear on-ink"></div>
       <div class="ticket-stub">
         <span class="serial mono">SERIAL № MLH-2026-LAGOS</span>
+        <div class="price-box">
+          <span class="price-label">Ticket price</span>
+          <span class="price-value">₦8,500</span>
+        </div>
         <a href="#" class="btn" id="buyTicketBtn">
           Buy your ticket <span class="btn-arrow">→</span>
         </a>
@@ -511,6 +612,27 @@
             <span class="course">Drinks</span>
             <span class="item">Malt & Bottled Water</span>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tear"></div>
+
+  <!-- TICKETS -->
+  <section id="tickets">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Secure your seat</p>
+        <h2 class="display">Reserve your spot</h2>
+      </div>
+      <div class="widget-card reveal-card delay">
+        <p class="widget-intro">Book your place securely with Tix Africa and get your confirmation instantly. The widget below is ready for checkout.</p>
+        <div class="tt-widget">
+          <div class="tt-widget-fallback">
+            <iframe src="https://widget.tix.africa/miva-hangout-26/VXNlci1jZmEwMDQ5MS1kMzI0LTQ0NDktOTdjOC0yYzkxNDE2Y2U2YTY=" style="width:100%; height:100%; border:none;" title="Ticket Widget"></iframe>
+          </div>
+          <script src="https://widget.tix.africa/widget.js" data-url="https://widget.tix.africa/miva-hangout-26/VXNlci1jZmEwMDQ5MS1kMzI0LTQ0NDktOTdjOC0yYzkxNDE2Y2U2YTY="></script>
         </div>
       </div>
     </div>
