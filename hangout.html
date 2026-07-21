@@ -528,6 +528,20 @@
     font-size: 0.98rem;
     max-width: 64ch;
   }
+  .map-card {
+    margin-top: 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--panel);
+  }
+  .map-card iframe {
+    display: block;
+    width: 100%;
+    min-height: 280px;
+    border: 0;
+    background: var(--panel);
+  }
 
   /* ---------- footer ---------- */
   footer {
@@ -662,10 +676,11 @@
         <h2 class="display">A rooftop reset for Miva students</h2>
       </div>
       <div class="about-grid">
-        <p class="about-text">No lectures. No deadlines. Just a good afternoon with the people behind the usernames.</p>
+        <p class="about-text">A meetup for Miva Open University students at the Lagos Study Centre — the kind of afternoon where you finally put faces to the usernames you’ve been seeing in class chats and forums.</p>
         <div class="about-body">
-          <p>Miva Lagos Hangout is a first-of-its-kind meetup for Miva Open University students at the Lagos Study Centre — <strong>one afternoon, one rooftop, one small crowd.</strong></p>
-          <p>Because the rooftop only holds <strong>40 people</strong>, this one stays intimate on purpose. Every ticket holder gets a seat, a plate, and real room to actually talk to people.</p>
+          <p>It’s happening on a rooftop in Lagos, and it’s staying small on purpose. The space only holds <strong>40 people</strong>, so this isn’t a big, noisy event where you get lost in the crowd — it’s a proper hangout.</p>
+          <p>Everyone gets a seat, a plate, and enough room to actually talk to the people around them. Come through, meet other students face to face, share a meal, and enjoy a relaxed afternoon away from screens and schedules. No agenda beyond good company and good conversation.</p>
+          <p>Spots are limited to <strong>40</strong>, so if you’re planning to come, don’t sit on it too long.</p>
         </div>
       </div>
     </div>
@@ -801,7 +816,15 @@
         <summary class="faq-q">Where exactly is the Study Centre?
           <span class="plus">+</span>
         </summary>
-        <p class="faq-a">Miva Lagos Study Centre — the event is on the rooftop. Exact directions will be sent to ticket holders closer to the date.</p>
+        <p class="faq-a">Miva Lagos Study Centre — the event is on the rooftop. Here’s the location so you can find it easily:</p>
+        <div class="map-card">
+          <iframe
+            src="https://www.google.com/maps?q=Miva%20Lagos%20Study%20Centre&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+            title="Google Map for Miva Lagos Study Centre"></iframe>
+        </div>
       </details>
     </div>
   </section>
@@ -844,25 +867,26 @@
 
   // ---- Team grid ----
   const team = [
-    { name: "Adeyinka", role: "Website & Ticketing" },
-    { name: "Marcus", role: "Website & Ticketing" },
-    { name: "David", role: "Graphic Design / Venue" },
-    { name: "Chef Ruth", role: "Food & Welfare" },
-    { name: "Ruth", role: "Food & Welfare" },
-    { name: "Eyoh", role: "Media Team" },
-    { name: "Chimdindu", role: "Venue Management" },
-    { name: "Salewa", role: "Welcoming Team" },
-    { name: "Stephanie", role: "Welcoming Team" },
-    { name: "Bukola", role: "Event Monitoring" },
-    { name: "DivineFortune", role: "MC" },
-    { name: "Charity Ben", role: "MC" },
+    { name: "Brainy", role: "Website & Ticketing", gender: "male" },
+    { name: "Marcus", role: "Website & Ticketing", gender: "male" },
+    { name: "David", role: "Graphic Design / Venue", gender: "male" },
+    { name: "Chef Ruth", role: "Food & Welfare", gender: "female" },
+    { name: "Ruth", role: "Food & Welfare", gender: "female" },
+    { name: "Eyoh", role: "Media Team", gender: "male" },
+    { name: "Chimdindu", role: "Venue Management", gender: "male" },
+    { name: "Salewa", role: "Welcoming Team", gender: "female" },
+    { name: "Stephanie", role: "Welcoming Team", gender: "female" },
+    { name: "Bukola", role: "Event Monitoring", gender: "female" },
+    { name: "DivineFortune", role: "MC", gender: "male" },
+    { name: "Charity Ben", role: "MC", gender: "female" },
   ];
 
   const teamGrid = document.getElementById('teamGrid');
   const AVATAR_BG = "12171a,141a1e,1a2126";
   team.forEach(person => {
     const initials = person.name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
-    const seed = encodeURIComponent(person.name);
+    const genderTag = person.gender === 'female' ? 'female' : 'male';
+    const seed = encodeURIComponent(`${person.name}-${genderTag}`);
     const avatarUrl = `https://api.dicebear.com/9.x/notionists/svg?seed=${seed}&backgroundColor=${AVATAR_BG}&radius=50`;
     const card = document.createElement('div');
     card.className = 'team-card';
