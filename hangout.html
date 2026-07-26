@@ -794,7 +794,7 @@
         <summary class="faq-q">What if I can no longer attend?
           <span class="plus">+</span>
         </summary>
-        <p class="faq-a">Refund and transfer details will be shared on the ticketing page once the platform is confirmed.</p>
+        <p class="faq-a">If you can no longer attend, a full refund is available as long as you contact the organizers before 30 August 2026. No refunds will be issued after that date.</p>
       </details>
 
       <details class="faq-item">
@@ -844,18 +844,18 @@
 
   // ---- Team grid ----
   const team = [
-    { name: "Adeyinka", role: "Website & Ticketing" },
-    { name: "Marcus", role: "Website & Ticketing" },
-    { name: "David", role: "Graphic Design / Venue" },
-    { name: "Chef Ruth", role: "Food & Welfare" },
-    { name: "Ruth", role: "Food & Welfare" },
-    { name: "Eyoh", role: "Media Team" },
-    { name: "Chimdindu", role: "Venue Management" },
-    { name: "Salewa", role: "Welcoming Team" },
-    { name: "Stephanie", role: "Welcoming Team" },
-    { name: "Bukola", role: "Event Monitoring" },
-    { name: "DivineFortune", role: "MC" },
-    { name: "Charity Ben", role: "MC" },
+    { name: "Adeyinka", role: "Website & Ticketing", female: false, photo: "pictures/team-adeyinka.jpg" },
+    { name: "Marcus", role: "Website & Ticketing", female: false, photo: "pictures/team-marcus.jpg" },
+    { name: "David", role: "Graphic Design / Venue", female: false, photo: "pictures/team-david.jpg" },
+    { name: "Chef Ruth", role: "Food & Welfare", female: true, photo: "pictures/team-chefruth.jpg" },
+    { name: "Ruth", role: "Food & Welfare", female: true, photo: "pictures/team-ruth.jpg" },
+    { name: "Eyoh", role: "Media Team", female: false, photo: "pictures/team-eyoh.jpg" },
+    { name: "Chimdindu", role: "Venue Management", female: false, photo: "pictures/team-chimdindu.jpg" },
+    { name: "Salewa", role: "Welcoming Team", female: true, photo: "pictures/team-salewa.jpg" },
+    { name: "Stephanie", role: "Welcoming Team", female: true, photo: "pictures/team-stephanie.jpg" },
+    { name: "Bukola", role: "Event Monitoring", female: true, photo: "pictures/team-bukola.jpg" },
+    { name: "DivineFortune", role: "MC", female: true, photo: "pictures/team-divinefortune.jpg" },
+    { name: "Charity Ben", role: "MC", female: true, photo: "pictures/team-charityben.jpg" },
   ];
 
   const teamGrid = document.getElementById('teamGrid');
@@ -863,12 +863,19 @@
   team.forEach(person => {
     const initials = person.name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
     const seed = encodeURIComponent(person.name);
-    const avatarUrl = `https://api.dicebear.com/9.x/notionists/svg?seed=${seed}&backgroundColor=${AVATAR_BG}&radius=50`;
+    const dicebearUrl = person.female
+      ? `https://api.dicebear.com/9.x/personas/svg?seed=${seed}&backgroundColor=${AVATAR_BG}&radius=50&hair=long,bobCut,pigtails,curlyBun,bobBangs,curly,straightBun,extraLong&facialHairProbability=0&mouth=smile,bigSmile,lips&eyes=open,happy&nose=smallRound`
+      : `https://api.dicebear.com/9.x/personas/svg?seed=${seed}&backgroundColor=${AVATAR_BG}&radius=50&hair=shortCombover,curlyHighTop,buzzcut,fade,shortComboverChops,mohawk&facialHairProbability=40&mouth=smile,bigSmile,smirk&eyes=open,happy`;
+    const avatarSrc = person.photo || dicebearUrl;
+    const fallbackSrc = person.photo ? dicebearUrl : null;
     const card = document.createElement('div');
     card.className = 'team-card';
+    const onerrorAttr = fallbackSrc
+      ? `onerror="this.onerror=null;this.src='${dicebearUrl}'"`
+      : `onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar',style:'display:flex;align-items:center;justify-content:center;font-family:Fraunces,serif;font-weight:600;color:#e9dcc4',textContent:'${initials}'}))"`;
     card.innerHTML = `
-      <img class="avatar" src="${avatarUrl}" alt="Avatar of ${person.name}" loading="lazy" width="76" height="76"
-           onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar',style:'display:flex;align-items:center;justify-content:center;font-family:Fraunces,serif;font-weight:600;color:#e9dcc4',textContent:'${initials}'}))">
+      <img class="avatar" src="${avatarSrc}" alt="Photo of ${person.name}" loading="lazy" width="76" height="76"
+           ${onerrorAttr}>
       <div class="name">${person.name}</div>
       <div class="role">${person.role}</div>
     `;
