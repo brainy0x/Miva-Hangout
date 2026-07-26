@@ -879,18 +879,6 @@
     { name: "Bukola", role: "Event Monitoring", female: true, photo: "pictures/team-bukola.jpg" },
     { name: "DivineFortune", role: "MC", female: true, photo: "pictures/team-divinefortune.jpg" },
     { name: "Charity Ben", role: "MC", female: true, photo: "pictures/team-charityben.jpg" },
-    { name: "Brainy", role: "Website & Ticketing", gender: "male" },
-    { name: "Marcus", role: "Website & Ticketing", gender: "male" },
-    { name: "David", role: "Graphic Design / Venue", gender: "male" },
-    { name: "Chef Ruth", role: "Food & Welfare", gender: "female" },
-    { name: "Ruth", role: "Food & Welfare", gender: "female" },
-    { name: "Eyoh", role: "Media Team", gender: "male" },
-    { name: "Chimdindu", role: "Venue Management", gender: "male" },
-    { name: "Salewa", role: "Welcoming Team", gender: "female" },
-    { name: "Stephanie", role: "Welcoming Team", gender: "female" },
-    { name: "Bukola", role: "Event Monitoring", gender: "female" },
-    { name: "DivineFortune", role: "MC", gender: "male" },
-    { name: "Charity Ben", role: "MC", gender: "female" },
   ];
 
   const teamGrid = document.getElementById('teamGrid');
@@ -902,18 +890,11 @@
       ? `https://api.dicebear.com/9.x/personas/svg?seed=${seed}&backgroundColor=${AVATAR_BG}&radius=50&hair=long,bobCut,pigtails,curlyBun,bobBangs,curly,straightBun,extraLong&facialHairProbability=0&mouth=smile,bigSmile,lips&eyes=open,happy&nose=smallRound`
       : `https://api.dicebear.com/9.x/personas/svg?seed=${seed}&backgroundColor=${AVATAR_BG}&radius=50&hair=shortCombover,curlyHighTop,buzzcut,fade,shortComboverChops,mohawk&facialHairProbability=40&mouth=smile,bigSmile,smirk&eyes=open,happy`;
     const avatarSrc = person.photo || dicebearUrl;
-    const fallbackSrc = person.photo ? dicebearUrl : null;
-    const genderTag = person.gender === 'female' ? 'female' : 'male';
-    const seed = encodeURIComponent(`${person.name}-${genderTag}`);
-    const avatarUrl = `https://api.dicebear.com/9.x/notionists/svg?seed=${seed}&backgroundColor=${AVATAR_BG}&radius=50`;
     const card = document.createElement('div');
     card.className = 'team-card';
-    const onerrorAttr = fallbackSrc
-      ? `onerror="this.onerror=null;this.src='${dicebearUrl}'"`
-      : `onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar',style:'display:flex;align-items:center;justify-content:center;font-family:Fraunces,serif;font-weight:600;color:#e9dcc4',textContent:'${initials}'}))"`;
     card.innerHTML = `
       <img class="avatar" src="${avatarSrc}" alt="Photo of ${person.name}" loading="lazy" width="76" height="76"
-           ${onerrorAttr}>
+           onerror="this.onerror=null;this.src='${dicebearUrl}'">
       <div class="name">${person.name}</div>
       <div class="role">${person.role}</div>
     `;
