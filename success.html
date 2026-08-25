@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Confirmed — Miva Lagos Hangout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0d0f;
+      --bg-raise: #12171a;
+      --panel: #141a1e;
+      --ink: #f4efe6;
+      --ink-soft: #a7a89f;
+      --ink-faint: #6d6f68;
+      --coral: #ff6a3d;
+      --sand: #e9dcc4;
+      --gold: #d8b56a;
+      --line: rgba(244, 239, 230, 0.10);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 28px;
+    }
+
+    .success-container {
+      max-width: 540px;
+      text-align: center;
+    }
+
+    .success-icon {
+      font-size: 64px;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 16px;
+      letter-spacing: -0.015em;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+      margin-bottom: 32px;
+      max-width: 50ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .ticket-info {
+      background: linear-gradient(160deg, var(--bg-raise), #0c1013);
+      border: 1px solid rgba(244, 239, 230, 0.18);
+      border-radius: 18px;
+      padding: 32px 24px;
+      margin-bottom: 32px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .info-value {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--gold);
+    }
+
+    .tickets-left {
+      font-family: 'Fraunces', serif;
+      font-size: 1.6rem;
+      color: var(--sand);
+      font-weight: 600;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--coral);
+      color: #12080a;
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 14px 24px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .btn:hover {
+      background: #e8542a;
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid rgba(244, 239, 230, 0.18);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--gold);
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      background: rgba(255, 106, 61, 0.15);
+      border: 1px solid rgba(255, 106, 61, 0.3);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      color: #ff7a6a;
+      font-size: 0.95rem;
+      text-align: left;
+      display: none;
+    }
+
+    .success-message {
+      background: rgba(216, 181, 106, 0.15);
+      border: 1px solid rgba(216, 181, 106, 0.3);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      color: var(--gold);
+      font-size: 0.95rem;
+      text-align: left;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="success-container">
+    <span class="success-icon" id="statusIcon">✓</span>
+    <h1 id="statusTitle">Payment Confirmed!</h1>
+    <p class="subtitle" id="statusMessage">Your spot is confirmed for the JJT Park Alausa hangout. See you on Saturday 12 September from 1:00 PM to 5:00 PM.</p>
+
+    <div class="error-message" id="errorMsg"></div>
+    <div class="success-message" id="successMsg"></div>
+
+    <div class="ticket-info">
+      <div class="info-row">
+        <span class="info-label">Event</span>
+        <span class="info-value">Miva Lagos Hangout 2026</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Date & Time</span>
+        <span class="info-value">Sat, 12 Sept · 1:00 PM – 5:00 PM</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Venue</span>
+        <span class="info-value">JJT Park, Alausa, Ikeja, Lagos</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Attendance</span>
+        <span class="tickets-left" id="ticketsRemaining">Open</span>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <a href="/" class="btn">Back to site</a>
+      <a href="/" class="btn btn-ghost">Share with friends</a>
+    </div>
+  </div>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const transactionId = urlParams.get('tx_ref') || urlParams.get('reference') || 'unknown';
+
+  const title = 'Registration Confirmed!';
+  const message = 'You’re on the list for the JJT Park Alausa hangout. See you on Saturday 12 September from 1:00 PM to 5:00 PM.';
+
+  document.getElementById('statusTitle').textContent = title;
+  document.getElementById('statusMessage').textContent = message;
+  document.getElementById('statusIcon').textContent = '✓';
+  document.getElementById('successMsg').style.display = 'block';
+  document.getElementById('successMsg').textContent = 'Reference: ' + transactionId;
+</script>
+
+</body>
+</html>
