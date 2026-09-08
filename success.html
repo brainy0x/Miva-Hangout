@@ -108,6 +108,33 @@
       font-weight: 600;
     }
 
+    .whatsapp-card {
+      background: rgba(37, 211, 102, 0.08);
+      border: 1px solid rgba(37, 211, 102, 0.3);
+      border-radius: 18px;
+      padding: 18px 20px;
+      margin: 0 auto 28px;
+      max-width: 440px;
+      text-align: left;
+    }
+
+    .whatsapp-card p {
+      color: var(--ink-soft);
+      font-size: 0.96rem;
+      margin-bottom: 14px;
+    }
+
+    .whatsapp-btn {
+      background: #25D366;
+      color: #062f18;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .whatsapp-btn:hover {
+      background: #1fb85d;
+    }
+
     .action-buttons {
       display: flex;
       gap: 14px;
@@ -209,9 +236,18 @@
         <span class="info-value">JJT Park, Alausa, Ikeja, Lagos</span>
       </div>
       <div class="info-row">
-        <span class="info-label">Attendance</span>
-        <span class="tickets-left" id="ticketsRemaining">Open</span>
+        <span class="info-label">Reference</span>
+        <span class="info-value" id="referenceValue">Checking...</span>
       </div>
+      <div class="info-row">
+        <span class="info-label">Attendance</span>
+        <span class="tickets-left" id="ticketsRemaining">Confirmed</span>
+      </div>
+    </div>
+
+    <div class="whatsapp-card">
+      <p>Join the event WhatsApp group for updates, reminders, and quick coordination.</p>
+      <a class="btn whatsapp-btn" href="https://chat.whatsapp.com/EBwiAPrMg6uA3FCASsZ2QW" target="_blank" rel="noreferrer">Join WhatsApp group</a>
     </div>
 
     <div class="action-buttons">
@@ -226,12 +262,14 @@
 
   const title = 'Registration Confirmed!';
   const message = 'You’re on the list for the JJT Park Alausa hangout. See you on Saturday 12 September from 1:00 PM to 5:00 PM.';
+  const reference = transactionId === 'unknown' ? 'Not available' : transactionId;
 
   document.getElementById('statusTitle').textContent = title;
   document.getElementById('statusMessage').textContent = message;
   document.getElementById('statusIcon').textContent = '✓';
+  document.getElementById('referenceValue').textContent = reference;
   document.getElementById('successMsg').style.display = 'block';
-  document.getElementById('successMsg').textContent = 'Reference: ' + transactionId;
+  document.getElementById('successMsg').textContent = 'Payment reference: ' + reference;
 </script>
 
 </body>
